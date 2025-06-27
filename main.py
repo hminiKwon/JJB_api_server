@@ -2,6 +2,9 @@
 from fastapi import FastAPI, Depends, status, Request
 import os
 import httpx # httpx 모듈 임포트 유지
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # 필요한 Janus 관련 모델 및 함수 임포트
 from services.janus.api_client import (
