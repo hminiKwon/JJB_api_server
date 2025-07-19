@@ -1,13 +1,15 @@
 from fastapi import FastAPI
 from app.api.v1.api import api_router
 from app.core.config import settings
+from app.core.database import Base, engine
+
+Base.metadata.create_all(bind=engine)
 
 # FastAPI 애플리케이션 생성
 app = FastAPI(
-    title="Janus API Gateway",
-    description="Python FastAPI를 이용한 Janus 서버 연동 API",
+    title="API",
+    description="Python FastAPI",
     version="1.0.0",
-    docs_url="/docs",
 )
 
 # v1 API 라우터를 메인 앱에 포함

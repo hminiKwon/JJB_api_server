@@ -1,13 +1,16 @@
+# app/core/config.py (개선된 버전)
 import os
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict # pydantic_settings에서 import
+from dotenv import load_dotenv
+
+load_dotenv() # .env 파일 로드
 
 class Settings(BaseSettings):
-    # Janus 서버의 REST API 주소
-    JANUS_SERVER_URL: str = "http://127.0.0.1:8088/janus"
+    JANUS_SERVER_URL: str
+    DATABASE_URL: str
 
-    class Config:
-        # .env 파일을 읽어오도록 설정
-        env_file = ".env"
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    # extra="ignore"는 .env 파일에 model_config에 정의되지 않은 변수가 있어도 무시하고 경고를 띄우지 않습니다.
 
 # 설정 객체 생성
 settings = Settings()
