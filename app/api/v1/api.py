@@ -6,4 +6,4 @@ api_router = APIRouter()
 
 # janus 엔드포인트 라우터를 포함
 api_router.include_router(janus.router, prefix="/janus", tags=["Janus VideoRoom"])
-api_router.include_router(users.router, prefix="/users", tags=["users"])
+api_router.include_router(users.router, prefix="/users", tags=["Users"])
