@@ -16,3 +16,8 @@
 
 - JANUS_SERVER_URL
 - DATABASE_URL
+
+## CICD 구축 완료
+
+- 서버 자동실행
+- DB Migration은 수동 필요
