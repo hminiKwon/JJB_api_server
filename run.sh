@@ -31,8 +31,8 @@ fi
 
 echo "의존성 설치 완료."
 
-echo "DataBase Migration을 진행합니다.
-sh ./migrate.sh
+# echo "DataBase Migration을 진행합니다."
+# sh ./migrate.sh
 
 # --- 3. 새 서버 실행 ---
 echo "새로운 서버를 포트 $PORT 에서 시작합니다."
