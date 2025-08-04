@@ -1,4 +1,3 @@
 #!/bin/bash
 
-source venv/bin/activate
-uvicorn app.main:app --reload --port 9991
+./venv/bin/uvicorn app.main:app --reload --port 9991
