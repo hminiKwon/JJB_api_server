@@ -37,6 +37,6 @@ echo "의존성 설치 완료."
 # --- 3. 새 서버 실행 ---
 echo "새로운 서버를 포트 $PORT 에서 시작합니다."
 # 가상 환경의 uvicorn을 직접 실행
-$VENV_UVICORN app.main:app --reload --port $PORT > ./logs/app.log 2>&1 &
+$VENV_UVICORN app.main:app --reload --port $PORT >> ./logs/app.log 2>&1 &
 
 echo "서버가 백그라운드에서 실행되었습니다."
