@@ -1,24 +1,39 @@
 #!/bin/bash
 
-# 확인할 포트 번호
+# --- 설정 ---
 PORT=9991
+VENV_PYTHON="./venv/bin/python"
+VENV_UVICORN="./venv/bin/uvicorn"
 
-echo "포트 $PORT 확인 중..."
-
-# lsof 명령어로 해당 포트를 사용하는 프로세스의 PID를 찾습니다.
-# -t 옵션은 PID 번호만 깔끔하게 출력합니다.
+# --- 1. 기존 서버 종료 ---
+echo "포트 $PORT 에서 실행 중인 서버를 확인합니다..."
 PID=$(lsof -t -i:$PORT)
 
-# PID 변수에 값이 있는지 (프로세스가 존재하는지) 확인합니다.
 if [ -n "$PID" ]; then
-  echo "포트 $PORT 에서 실행 중인 프로세스(PID: $PID)를 발견했습니다."
-  echo "프로세스를 종료합니다..."
+  echo "기존 서버(PID: $PID)를 종료합니다."
   kill $PID
-  echo "완료!"
+  # 프로세스가 완전히 종료될 때까지 잠시 대기
+  sleep 2
 else
-  echo "포트 $PORT 에서 실행 중인 프로세스가 없습니다."
+  echo "실행 중인 서버가 없습니다."
 fi
 
-echo "백엔드 파이썬 서버를 실행합니다."
+# --- 2. 의존성 설치 ---
+echo "requirements.txt 의존성을 설치합니다..."
+# 가상 환경의 python을 이용해 pip를 실행하여 설치
+$VENV_PYTHON -m pip install -r requirements.txt
 
-nohup ./venv/bin/uvicorn app.main:app --port 9991 &
+# 설치 성공 여부 확인
+if [ $? -ne 0 ]; then
+    echo "의존성 설치에 실패했습니다. 스크립트를 중단합니다."
+    exit 1
+fi
+
+echo "의존성 설치 완료."
+
+# --- 3. 새 서버 실행 ---
+echo "새로운 서버를 포트 $PORT 에서 시작합니다."
+# 가상 환경의 uvicorn을 직접 실행
+$VENV_UVICORN app.main:app --reload --port $PORT &
+
+echo "서버가 백그라운드에서 실행되었습니다."
