@@ -12,4 +12,4 @@ router = APIRouter()
 @router.post("/", response_model=User, status_code=status.HTTP_201_CREATED, summary="User 생성")
 def create_new_item(item: UserCreate, db: Session = Depends(get_db)):
     """새로운 항목을 생성합니다."""
-    return user_service.create_item(db=db, item=item)
+    return user_service.create_user(db=db, item=item)

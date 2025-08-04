@@ -16,11 +16,14 @@ project_root = os.path.abspath(os.path.join(current_dir, '..', '..'))
 sys.path.insert(0, project_root)
 
 try:
+    from app.core.database import Base
     from app.models.user import User # <--- 이 부분을 여러분의 실제 Base import 경로로 변경하세요.
+    from app.models.couple import Couple
 except ImportError:
     print("Warning: Could not import Base from app.models.base. "
           "Please ensure the path is correct in migrations/env.py.", file=sys.stderr)
     User = None
+    Couple = None
 
 # ---------------------------------------------------------------------
 # 2. Alembic 설정 로드 (alembic.ini 파일로부터)
@@ -33,8 +36,8 @@ if config.config_file_name is not None:
 # ---------------------------------------------------------------------
 # 3. SQLAlchemy Base.metadata 연결
 # ---------------------------------------------------------------------
-if User:
-    target_metadata = User.metadata
+if Base:
+    target_metadata = Base.metadata
 else:
     target_metadata = None
     print("Error: target_metadata is None. Alembic auto-generation may not work correctly.", file=sys.stderr)

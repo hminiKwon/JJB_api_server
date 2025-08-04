@@ -24,6 +24,8 @@ fi
 
 MIGRATION_MESSAGE="$1"
 
+source .env
+
 # 2. DATABASE_URL 환경 변수 확인
 if [ -z "$DATABASE_URL" ]; then
   echo "오류: DATABASE_URL 환경 변수가 설정되지 않았습니다."
