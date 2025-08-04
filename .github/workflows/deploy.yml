@@ -1,0 +1,36 @@
+# deploy.yml 최종 완성본
+name: Deploy FastAPI Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Server and Manage Logs
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          script: |
+            # --- 설정 ---
+            PROJECT_DIR="/home/escapeonnet/JJB_api_server" # 실제 프로젝트 경로로 수정
+
+            # --- 프로젝트 디렉토리로 이동 ---
+            cd $PROJECT_DIR
+
+            # --- 최신 코드로 업데이트 ---
+            echo "Updating code from Git..."
+            git pull origin main
+
+            # --- 1. 기존 서버 종료 ---
+            echo "SH 실행"
+            sh ./run.sh
