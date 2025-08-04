@@ -12,11 +12,11 @@ BACKUP_DIR="./logs"
 OS_TYPE=$(uname)
 YESTERDAY=""
 
-if [ "$OS_TYPE" == "Darwin" ]; then
+if [ "$OS_TYPE" = "Darwin" ]; then
   # macOS용 명령어
   echo "macOS 환경을 감지했습니다."
   YESTERDAY=$(date -v-1d +%Y-%m-%d)
-elif [ "$OS_TYPE" == "Linux" ]; then
+elif [ "$OS_TYPE" = "Linux" ]; then
   # 리눅스용 명령어
   echo "리눅스 환경을 감지했습니다."
   YESTERDAY=$(date -d "yesterday" +%Y-%m-%d)
