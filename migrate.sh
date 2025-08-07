@@ -15,6 +15,9 @@
 #   예: export DATABASE_URL="mysql+mysqlclient://user:password@host:port/dbname"
 # =========================================================
 
+# --- 설정 ---
+VENV_PYTHON="./venv/bin/python"
+
 # 1. 마이그레이션 메시지 인자 확인
 if [ -z "$1" ]; then
   echo "오류: 마이그레이션 메시지를 인자로 제공해야 합니다."
@@ -41,7 +44,7 @@ echo "----------------------------------------------------"
 
 # 3. 새로운 마이그레이션 스크립트 생성
 echo "새로운 마이그레이션 스크립트 생성 중..."
-alembic revision --autogenerate -m "$MIGRATION_MESSAGE"
+$VENV_PYTHON -m alembic revision --autogenerate -m "$MIGRATION_MESSAGE"
 
 # 이전 명령의 성공 여부 확인
 if [ $? -ne 0 ]; then
@@ -53,7 +56,7 @@ echo "마이그레이션 스크립트 생성 완료."
 
 # 4. 모든 대기 중인 마이그레이션 적용
 echo "모든 대기 중인 마이그레이션 데이터베이스에 적용 중..."
-alembic upgrade head
+$VENV_PYTHON -m alembic upgrade head
 
 # 이전 명령의 성공 여부 확인
 if [ $? -ne 0 ]; then
