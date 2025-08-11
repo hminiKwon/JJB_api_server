@@ -6,6 +6,8 @@ class UserBase(BaseModel):
   user_name: str
 
 class UserCreate(UserBase):
+  user_pwd: str
+  user_number: str
   pass
 
 class User(UserBase):

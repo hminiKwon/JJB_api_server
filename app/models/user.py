@@ -7,8 +7,9 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement="auto", nullable=False)
     user_id = Column(String(255), index=True, nullable=False)
-    user_pwd = Column(String(255), index=True, nullable=False)
+    user_pwd = Column(String(255), index=False, nullable=False)
     user_name = Column(String(255), index=True, nullable=False)
+    user_number = Column(String(255), index=True, nullable=False)
     couple_id = Column(Integer, ForeignKey("couple.id"))
     created_at = Column(DateTime, default=func.now(), nullable=False)
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
