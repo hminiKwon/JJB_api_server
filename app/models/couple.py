@@ -11,7 +11,7 @@ class Couple(Base):
     created_at = Column(DateTime, default=func.now(), nullable=False)
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
 
-    user = relationship("User", back_populates="user")
+    users = relationship("User", back_populates="couple")
 
     # def __repr__(self):
     #     return f"<Couple(id={self.id})>"
