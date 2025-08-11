@@ -18,4 +18,4 @@ def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
 def search_user(user_id: str, db:Session = Depends(get_db)):
     """유저를 조회합니다."""
 
-    return user_service.create_user(db=db, user_id=user_id)
+    return user_service.search_user(db=db, user_id=user_id)
