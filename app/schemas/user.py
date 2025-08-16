@@ -8,6 +8,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
   user_pwd: str
   user_number: str
+  user_gender: int
   pass
 
 class User(UserBase):

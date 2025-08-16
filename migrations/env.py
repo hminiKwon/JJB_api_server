@@ -74,7 +74,7 @@ def run_migrations_online() -> None:
     """
     # 환경 변수에서 DB URL을 가져옵니다.
     # 'DATABASE_URL'은 여러분이 설정한 환경 변수 이름으로 변경하세요.
-    db_url = os.environ.get("DATABASE_URL")
+    db_url = os.environ.get("DATABASE_URL_2")
     if not db_url:
         raise ValueError("DATABASE_URL environment variable is not set for online mode.")
 

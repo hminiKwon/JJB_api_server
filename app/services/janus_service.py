@@ -5,8 +5,10 @@ import random
 import string
 import asyncio
 from fastapi import HTTPException, status
-from app.core.config import settings
+from app.core.config import get_settings
 from app.schemas.janus import RoomUpdateRequest
+
+settings = get_settings()
 
 # ( _generate_transaction_id 함수는 그대로 사용 )
 def _generate_transaction_id(length: int = 12) -> str:
@@ -34,7 +36,7 @@ class JanusService:
             except httpx.HTTPStatusError as e:
                 raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=f"Failed to communicate with Janus server: {e.response.text}")
             except httpx.RequestError as e:
-                 raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=f"Could not connect to Janus server: {e}")
+                raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=f"Could not connect to Janus server: {e}")
 
     async def _initialize_session(self):
         """세션과 비디오룸 핸들을 한번만 생성하고, self에 저장"""
