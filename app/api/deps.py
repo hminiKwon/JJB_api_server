@@ -1,5 +1,6 @@
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from typing import Optional
+from fastapi import Depends, HTTPException, status, Security
+from fastapi.security import APIKeyCookie, HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -8,29 +9,35 @@ from app.core.security import decode_access_token
 from app.models.user import User
 
 # 문서용 토큰 발급 경로는 v1 기준으로 맞춤
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+bearer_scheme = HTTPBearer(auto_error=False, scheme_name="bearerAuth")
+refresh_cookie = APIKeyCookie(name="refresh_token", auto_error=False)
 
 async def get_current_user(
-    token: str = Depends(oauth2_scheme),
+    credentials: HTTPAuthorizationCredentials | None = Security(bearer_scheme),
     db: AsyncSession = Depends(get_db),
 ) -> User:
-    credentials_exc = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
-    )
+    cred_exc = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+
+    if credentials is None or (credentials.scheme or "").lower() != "bearer":
+        print("No credentials provided or not a bearer token")
+        raise cred_exc
+
+    token_str = credentials.credentials
     try:
-        payload = decode_access_token(token)
+        payload = decode_access_token(token_str)
         if payload.get("typ") != "access":
-            raise credentials_exc
+            raise cred_exc
         sub = payload.get("sub")
         if not sub:
-            raise credentials_exc
+            raise cred_exc
     except Exception:
-        raise credentials_exc
+        raise cred_exc
 
-    res = await db.execute(select(User).where(User.id == int(sub)))
+    res = await db.execute(select(User).where(User.id == sub))  # 필요시 int(sub)
     user = res.scalar_one_or_none()
     if not user or not user.is_active:
-        raise credentials_exc
+        raise cred_exc
     return user
 
 # (선택) 관리자 권한 가드 예시
