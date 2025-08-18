@@ -11,7 +11,7 @@ router = APIRouter()
 async def me(request: Request, user: User = Depends(get_current_user)):
     return {"id": user.user_id, "name": user.user_name}
 
-@router.get("/test")
-async def test(request: Request):
-    print(request.headers.get("authorization"))
-    return {}
+# @router.get("/test")
+# async def test(request: Request):
+#     print(request.headers.get("authorization"))
+#     return {}
